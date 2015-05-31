@@ -18,7 +18,8 @@
 
 package org.jboss.modules;
 
-import __redirected.__JAXPRedirected;
+import static java.security.AccessController.doPrivileged;
+import static org.jboss.modules.SecurityActions.setContextClassLoader;
 
 import java.io.BufferedReader;
 import java.io.File;
@@ -35,17 +36,13 @@ import java.util.Iterator;
 import java.util.ServiceLoader;
 import java.util.jar.Attributes;
 import java.util.jar.JarFile;
-import java.util.logging.LogManager;
-
 import java.util.jar.Manifest;
+import java.util.logging.LogManager;
 import java.util.prefs.Preferences;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 import org.jboss.modules.log.JDKModuleLogger;
-
-import static java.security.AccessController.doPrivileged;
-import static org.jboss.modules.SecurityActions.setContextClassLoader;
 
 /**
  * The main entry point of JBoss Modules when run as a JAR on the command line.
@@ -89,8 +86,6 @@ public final class Main {
         System.out.println("    -deptree      Print the dependency tree of the given module instead of running it");
         System.out.println("    -jar          Specify that the final argument is the name of a");
         System.out.println("                  JAR file to run as a module; not compatible with -class");
-        System.out.println("    -jaxpmodule <module-spec>");
-        System.out.println("                  The default JAXP implementation to use of the JDK");
         System.out.println("    -secmgr       Run with a security manager installed; not compatible with -secmgrmodule");
         System.out.println("    -secmgrmodule <module-spec>");
         System.out.println("                  Run with a security manager module; not compatible with -secmgr");
@@ -373,11 +368,11 @@ public final class Main {
             moduleIdentifier = ModuleIdentifier.fromString(nameArgument);
         }
         Module.initBootModuleLoader(loader);
-        if (jaxpModuleIdentifier != null) {
+       /* if (jaxpModuleIdentifier != null) {
             __JAXPRedirected.changeAll(jaxpModuleIdentifier, Module.getBootModuleLoader());
         } else {
             __JAXPRedirected.changeAll(moduleIdentifier, Module.getBootModuleLoader());
-        }
+        }*/
 
         final Module module;
         try {
